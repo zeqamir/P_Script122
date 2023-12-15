@@ -1,0 +1,31 @@
+./ScriptMenuProjet.ps1      
+
+Que voulez-vous faire ?
+	Option 1
+		Voulez-vous gérer un fichier ou un répertoire ?
+			Répertoire / Fichier
+	
+				Que souhaitez-vous faire ?
+					Copier
+					Supprimer
+			
+						Indiquez le chemin
+							path
+
+
+Que voulez-vous faire ?
+	Option 1
+		Voulez-vous gérer un fichier ou un répertoire ?
+			Répertoire / Fichier
+	
+				Que souhaitez-vous faire ?
+					Déplacer
+			
+						Indiquez le chemin du fichier ou répertoire à copier
+							path
+				
+							Indiquez le chemin ou se doit se copier le fichier ou répertoire
+								path
+								
+								
+								
