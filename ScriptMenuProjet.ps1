@@ -31,3 +31,92 @@ Takes any strings for the file name or extension.
 -
 
 #>
+
+$continue = $true
+while ($continue) {
+    write-host “Quelle option choisissez-vous ? `n1 Option 1 `n2 Option 2 `n3 Option 3 `n0 Sortie"
+
+    $choice = read-host “>”
+    switch ($choice) {
+        1 {
+            function ShowMenu {
+                Clear-Host
+                Write-Host "****** Option 1 ******"
+                Write-Host "1. Gérer un répertoire"
+                Write-Host "2. Gérer un fichier"
+                Write-Host "0. Quitter option 1"
+            }
+            
+            function DirectoryManagement {
+                $path = Read-Host "Entrez le chemin du répertoire à gérer"
+                
+                if (Test-Path $path -PathType Container) {
+                    Write-Host "1. Copier le répertoire"
+                    Write-Host "2. Supprimer le répertoire"
+                    Write-Host "3. Déplacer le répertoire"
+                    $choice = Read-Host "Faites votre choix"
+            
+                    switch ($choice) {
+                        1 { Copy-Item $path -Destination (Read-Host "Entrez le chemin de destination") -Recurse }
+                        2 { Remove-Item $path -Recurse -Force }
+                        3 { Move-Item $path -Destination (Read-Host "Entrez le nouveau chemin") }
+                        default { Write-Host "Choix non valide" }
+                    }
+                }
+                else {
+                    Write-Host "Le chemin spécifié n'est pas un répertoire."
+                }
+            }
+            
+            function FileManagement {
+                $path = Read-Host "Entrez le chemin du fichier à gérer"
+            
+                if (Test-Path $path -PathType Leaf) {
+                    Write-Host "1. Copier le fichier"
+                    Write-Host "2. Supprimer le fichier"
+                    Write-Host "3. Déplacer le fichier"
+                    $choice = Read-Host "Faites votre choix"
+            
+                    switch ($choice) {
+                        1 { Copy-Item $path -Destination (Read-Host "Entrez le chemin de destination") }
+                        2 { Remove-Item $path -Force }
+                        3 { Move-Item $path -Destination (Read-Host "Entrez le nouveau chemin") }
+                        default { Write-Host "Choix non valide" }
+                    }
+                }
+                else {
+                    Write-Host "Le chemin spécifié n'est pas un fichier."
+                }
+            }
+            
+            
+            do {
+                ShowMenu
+                $FisrtChoice = Read-Host "Faites votre choix"
+            
+                switch ($FisrtChoice) {
+                    1 { DirectoryManagement }
+                    2 { FileManagement }
+                    0 { Write-Host "Au revoir!" }
+                    default { Write-Host "Choix non valide" }
+                }
+            
+                Pause
+            } while ($FisrtChoice -ne 0)
+                               
+        }
+
+        2 {
+           
+        }
+
+        3 {
+           
+        }
+
+        0 {
+            $continue = $false
+            Clear-Host
+        }
+    }
+}

@@ -25,7 +25,4 @@ Que voulez-vous faire ?
 							path
 				
 							Indiquez le chemin ou se doit se copier le fichier ou répertoire
-								path
-								
-								
-								
+								path			
