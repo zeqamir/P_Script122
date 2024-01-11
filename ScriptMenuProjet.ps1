@@ -25,7 +25,7 @@ Takes any strings for the file name or extension.
 -
  
 .EXAMPLE
- ./ScriptMenuProjet.ps1 -p C:\Users\EtmlPowershell\Desktop\numberingFiles
+ ./ScriptMenuProjet.ps1
 
 .LINK
 -
@@ -34,14 +34,15 @@ Takes any strings for the file name or extension.
 
 $continue = $true
 while ($continue) {
-    write-host “Quelle option choisissez-vous ? `n1 Option 1 `n2 Option 2 `n3 Option 3 `n0 Sortie"
+    clear-host
+    write-host “Quelle option choisissez-vous ? `n1 Option 1 `n2 Option 2 `n3 Option 3 `n0 Quitter le menu"
 
-    $choice = read-host “>”
+    $choice = read-host “Faites votre choix”
     switch ($choice) {
         1 {
-            function ShowMenu {
+            function ShowMenuOption1 {
                 Clear-Host
-                Write-Host "****** Option 1 ******"
+                Write-Host "Option 1"
                 Write-Host "1. Gérer un répertoire"
                 Write-Host "2. Gérer un fichier"
                 Write-Host "0. Quitter option 1"
@@ -91,27 +92,68 @@ while ($continue) {
             
             
             do {
-                ShowMenu
+                ShowMenuOption1
                 $FisrtChoice = Read-Host "Faites votre choix"
             
                 switch ($FisrtChoice) {
                     1 { DirectoryManagement }
                     2 { FileManagement }
-                    0 { Write-Host "Au revoir!" }
+                    0 {  }
                     default { Write-Host "Choix non valide" }
                 }
-            
                 Pause
             } while ($FisrtChoice -ne 0)
                                
         }
 
         2 {
-           
+            function ShowMenuOption2 {
+                Clear-Host
+                Write-Host "Option 2"
+                Write-Host "1. Générer un rapport sur l'état du système"
+                Write-Host "0. Quitter option 2"
+            }
+            
+            function AFaire {
+                Write-Host "A Faire"
+            }
+            
+            do {
+                ShowMenuOption2
+                $FisrtChoice = Read-Host "Faites votre choix"
+            
+                switch ($FisrtChoice) {
+                    1 { AFaire }
+                    0 {  }
+                    default { Write-Host "Choix non valide" }
+                }
+                Pause
+            } while ($FisrtChoice -ne 0)
         }
 
         3 {
-           
+            function ShowMenuOption3 {
+                Clear-Host
+                Write-Host "Option 3"
+                Write-Host "1. à choisir"
+                Write-Host "0. Quitter option 3"
+            }
+            
+            function ToChoose {
+                Write-Host "A choisir"
+            }
+            
+            do {
+                ShowMenuOption3
+                $FisrtChoice = Read-Host "Faites votre choix"
+            
+                switch ($FisrtChoice) {
+                    1 { ToChoose }
+                    0 {  }
+                    default { Write-Host "Choix non valide" }
+                }
+                Pause
+            } while ($FisrtChoice -ne 0)
         }
 
         0 {
