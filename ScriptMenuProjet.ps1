@@ -21,6 +21,10 @@ Script pour des opérations interactives basées sur un menu :
 
 .EXAMPLE
 .\ScriptMenuProjet.ps1
+
+.LINK
+https://chat.openai.com/
+https://learn.microsoft.com/fr-fr/powershell/
 #>
 
 # Fonction pour afficher le menu de l'Option 1
@@ -86,20 +90,20 @@ function ShowMenuOption2 {
     Write-Host "0. Quitter option 2"
 }
 
-# Fonction pour créer un rapport sur l'état du système (Fais pas ChatGPT, Compréhension pas finie)
+# Fonction pour créer un rapport sur l'état du système (Fais par ChatGPT, Compréhension faites)
 function CreateReport {
     # Obtenir des informations sur le système
     $systemInfo = @{
-        "Nom de l'ordinateur" = $env:COMPUTERNAME
-        "OS"                  = (Get-CimInstance Win32_OperatingSystem).Caption
-        "Processeur"          = (Get-CimInstance Win32_Processor).Name
-        "Architecture CPU"    = (Get-CimInstance Win32_Processor).AddressWidth
-        "Nombre de cœurs"     = (Get-CimInstance Win32_Processor).NumberOfCores
-        "Nombre de threads"   = (Get-CimInstance Win32_Processor).NumberOfLogicalProcessors
-        "Mémoire physique (GB)" = [math]::Round((Get-CimInstance Win32_PhysicalMemory | Measure-Object Capacity -Sum).Sum / 1GB, 2)
-        "Espace total du disque (GB)" = [math]::Round((Get-CimInstance Win32_LogicalDisk | Where-Object { $_.DriveType -eq 3 } | Measure-Object Size -Sum).Sum / 1GB, 2)
-        "Espace libre du disque (GB)" = [math]::Round((Get-CimInstance Win32_LogicalDisk | Where-Object { $_.DriveType -eq 3 } | Measure-Object FreeSpace -Sum).Sum / 1GB, 2)
-        "Version .NET installée" = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full' -Name Version).Version
+        "Nom de l'ordinateur"            = $env:COMPUTERNAME
+        "OS"                             = (Get-CimInstance Win32_OperatingSystem).Caption
+        "Processeur"                     = (Get-CimInstance Win32_Processor).Name
+        "Architecture CPU"               = (Get-CimInstance Win32_Processor).AddressWidth
+        "Nombre de coeurs"               = (Get-CimInstance Win32_Processor).NumberOfCores
+        "Nombre de threads"              = (Get-CimInstance Win32_Processor).NumberOfLogicalProcessors
+        "Mémoire physique (GB)"          = [math]::Round((Get-CimInstance Win32_PhysicalMemory | Measure-Object Capacity -Sum).Sum / 1GB, 2)
+        "Espace total du disque (GB)"    = [math]::Round((Get-CimInstance Win32_LogicalDisk | Where-Object { $_.DriveType -eq 3 } | Measure-Object Size -Sum).Sum / 1GB, 2)
+        "Espace libre du disque (GB)"    = [math]::Round((Get-CimInstance Win32_LogicalDisk | Where-Object { $_.DriveType -eq 3 } | Measure-Object FreeSpace -Sum).Sum / 1GB, 2)
+        "Version .NET installée"         = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full' -Name Version).Version
         "Liste des programmes installés" = (Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion, Publisher | Format-Table -AutoSize | Out-String).Trim()
     }
 
@@ -128,19 +132,29 @@ function CreateReport {
 function ShowMenuOption3 {
     Clear-Host
     Write-Host "Option 3 : Gestion de services"
-    Write-Host "1. Afficher les serveurs actifs"
+    Write-Host "1. Afficher et désactiver un service"
     Write-Host "0. Quitter option 3"
 }
 
-# Fonction pour obtenir la liste des services actifs (Pas fini, manque la désactivation, l'activation,...)
-function GetActiveServices {
+# Fonction pour obtenir la liste des services actifs et les désactiver (Aide de ChatGPT, Compréhension faites)
+function ManageActiveServices {
     $activeServices = Get-Service | Where-Object { $_.Status -eq 'Running' }
 
     if ($activeServices.Count -gt 0) {
         Write-Host "Services actifs :"
         $activeServices | Format-Table DisplayName, ServiceName, Status -AutoSize
+
+        $serviceName = Read-Host "Entrez le nom du service à désactiver"
+        $service = Get-Service -Name $serviceName
+
+        if ($null -ne $service) {
+            Stop-Service -Name $serviceName
+        }
+        else {
+            Write-Host "Le service spécifié n'a pas été trouvé."
+        }
         Pause
-    } 
+    }
     else {
         Write-Host "Aucun service actif trouvé."
         Pause
@@ -195,13 +209,13 @@ while ($continue) {
             do {
                 ShowMenuOption3
                 $FisrtChoice = Read-Host "Faites votre choix"
-            
+
                 switch ($FisrtChoice) {
-                    1 { GetActiveServices }
-                    0 {  }
+                    1 { ManageActiveServices }
+                    0 { }
                     default { Write-Host "Choix non valide" }
                 }
-                
+
             } while ($FisrtChoice -ne 0)
         }
 
